@@ -50,14 +50,14 @@ func Start(jobs <-chan []byte, m *metrics.Metrics, d *dedup.Dedup, slowDuration 
 		e := getEntry()
 
 		parser.Parse(line, e)
+		statusCode := statusClass(e.Status)
+		m.RequestTotal.WithLabelValues(string(e.Path), string(e.Method), statusCode).Inc()
 
-		m.RequestTotal.WithLabelValues(string(e.Path), string(e.Method), statusClass(e.Status)).Inc()
-
-		m.RequestDuration.WithLabelValues(string(e.Path), string(e.Method)).Observe(e.Time)
-		m.DBDuration.WithLabelValues(string(e.Path), string(e.Method)).Observe(e.DBTime)
+		m.RequestDuration.WithLabelValues(string(e.Path), string(e.Method), statusCode).Observe(e.Time)
+		m.DBDuration.WithLabelValues(string(e.Path), string(e.Method), statusCode).Observe(e.DBTime)
 
 		if e.Time > float64(slowDuration) {
-			m.SlowRequests.WithLabelValues(string(e.Path), string(e.Method)).Inc()
+			m.SlowRequests.WithLabelValues(string(e.Path), string(e.Method), statusCode).Inc()
 		}
 
 		m.LastTs.Set(float64(time.Now().Unix()))

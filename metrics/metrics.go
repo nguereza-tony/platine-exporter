@@ -47,7 +47,7 @@ func New(prefix string) *Metrics {
 				5, 10, 25, 50, 100, 250, 500, 1000, 2000, 5000,
 			},
 		},
-		[]string{"path", "method"},
+		[]string{"path", "method", "status"},
 	)
 
 	m.DBDuration = prometheus.NewHistogramVec(
@@ -58,14 +58,14 @@ func New(prefix string) *Metrics {
 				1, 5, 10, 25, 50, 100, 250, 500,
 			},
 		},
-		[]string{"path", "method"},
+		[]string{"path", "method", "status"},
 	)
 
 	m.SlowRequests = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
 			Name: prefix + "slow_requests_total",
 		},
-		[]string{"path", "method"},
+		[]string{"path", "method", "status"},
 	)
 
 	m.LastTs = prometheus.NewGauge(prometheus.GaugeOpts{
