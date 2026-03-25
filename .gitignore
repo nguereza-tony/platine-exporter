@@ -1,0 +1,86 @@
+# 🔒 Binaries
+
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+platine-exporter
+
+# 🔒 Build output
+
+/build/
+/bin/
+/dist/
+
+# 🔒 Go workspace
+
+go.work
+go.work.sum
+
+# 🔒 Dependencies (optional if vendoring)
+
+vendor/
+
+# 🔒 Logs
+
+*.log
+logs/
+*.out
+
+# 🔒 Temporary files
+
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+
+# 🔒 OS files
+
+.DS_Store
+Thumbs.db
+
+# 🔒 IDE / Editors
+
+## VSCode
+
+.vscode/
+
+## GoLand / IntelliJ
+
+.idea/
+
+## Vim
+
+*.swp
+
+# 🔒 Environment variables
+
+.env
+.env.*
+
+# 🔒 State files (IMPORTANT for your exporter)
+
+*.json
+!go.mod
+!go.sum
+
+# 🔒 Coverage / profiling
+
+coverage.out
+*.cover
+*.prof
+
+# 🔒 Debug
+
+*.test
+
+# 🔒 Node (if ever used)
+
+node_modules/
+
+# 🔒 Misc
+
+*.pid
+*.seed
