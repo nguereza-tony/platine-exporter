@@ -8,18 +8,18 @@ import (
 	"platine-exporter/parser"
 )
 
-var pool = make(chan *parser.Entry, 10000)
+var pool = make(chan *parser.LogEntry, 10000)
 
-func getEntry() *parser.Entry {
+func getEntry() *parser.LogEntry {
 	select {
 	case e := <-pool:
 		return e
 	default:
-		return &parser.Entry{}
+		return &parser.LogEntry{}
 	}
 }
 
-func putEntry(e *parser.Entry) {
+func putEntry(e *parser.LogEntry) {
 	select {
 	case pool <- e:
 	default:
@@ -30,7 +30,7 @@ func Start(jobs <-chan []byte, m *metrics.Metrics, d *dedup.Dedup) {
 
 	for line := range jobs {
 
-		if d.Seen(line) {
+		if d.Exists(line) {
 			continue
 		}
 
@@ -42,7 +42,7 @@ func Start(jobs <-chan []byte, m *metrics.Metrics, d *dedup.Dedup) {
 
 		m.Duration.WithLabelValues(string(e.Path), string(e.Method)).Observe(e.Time)
 
-		if e.Time >= 0.5 {
+		if e.Time >= 500 {
 			m.SlowRequests.Inc()
 		}
 

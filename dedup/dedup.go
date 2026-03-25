@@ -17,7 +17,7 @@ func New(size int, ttl time.Duration) *Dedup {
 	return &Dedup{cache: c, ttl: ttl}
 }
 
-func (d *Dedup) Seen(line []byte) bool {
+func (d *Dedup) Exists(line []byte) bool {
 
 	key := sha1.Sum(line)
 	k := string(key[:])

@@ -8,8 +8,7 @@ import (
 	"github.com/fsnotify/fsnotify"
 )
 
-func Tail(path string, jobs chan<- []byte, offset *int64, inode *uint64) {
-
+func Tail(path string, jobs chan<- []byte, offset *int64) {
 	watcher, _ := fsnotify.NewWatcher()
 	defer watcher.Close()
 
@@ -19,12 +18,14 @@ func Tail(path string, jobs chan<- []byte, offset *int64, inode *uint64) {
 		for {
 			select {
 			case event := <-watcher.Events:
-
+				// Detect file update or create
 				if event.Op&(fsnotify.Write|fsnotify.Create) != 0 {
 					readFile(path, jobs, offset)
 				}
 
+				// Detect file remove or rename
 				if event.Op&(fsnotify.Remove|fsnotify.Rename) != 0 {
+					log.Println("File removed or renamed detected")
 					time.Sleep(time.Second)
 
 					fi, err := os.Stat(path)

@@ -28,7 +28,7 @@ func New(prefix string) *Metrics {
 
 	m.Duration = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name: prefix + "request_duration_seconds",
+			Name: prefix + "request_duration",
 		},
 		[]string{"path", "method"},
 	)

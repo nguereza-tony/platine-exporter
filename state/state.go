@@ -6,8 +6,7 @@ import (
 )
 
 type State struct {
-	Inode  uint64 `json:"inode"`
-	Offset int64  `json:"offset"`
+	Offset int64 `json:"offset"`
 }
 
 func Load(path string) *State {

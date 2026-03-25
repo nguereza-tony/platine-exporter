@@ -17,7 +17,7 @@ func Start(addr, path string) error {
 		Handler: mux,
 	}
 
-	log.Printf("Exporter started on %s", addr)
+	log.Printf("Platine Exporter Listened on %s", addr)
 
 	err := server.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {
