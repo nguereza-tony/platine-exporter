@@ -26,7 +26,7 @@ func main() {
 	var offset = st.Offset
 
 	for i := 0; i < cfg.Workers; i++ {
-		go worker.Start(jobs, m, d)
+		go worker.Start(jobs, m, d, cfg.SlowDuration)
 	}
 
 	go reader.Tail(cfg.LogFile, jobs, &offset)

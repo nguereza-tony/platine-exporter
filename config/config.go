@@ -3,12 +3,13 @@ package config
 import "flag"
 
 type Config struct {
-	LogFile     string
-	Addr        string
-	MetricsPath string
-	StateFile   string
-	Prefix      string
-	Workers     int
+	LogFile      string
+	Addr         string
+	MetricsPath  string
+	StateFile    string
+	Prefix       string
+	Workers      int
+	SlowDuration int
 }
 
 func Load() *Config {
@@ -54,6 +55,13 @@ func Load() *Config {
 		"workers",
 		4,
 		"Number of concurrent worker goroutines used to process log entries. Increasing this value improves throughput but may increase CPU usage.",
+	)
+
+	flag.IntVar(
+		&cfg.SlowDuration,
+		"slow-duration",
+		500,
+		"Slow duration in millisecond",
 	)
 
 	flag.Parse()

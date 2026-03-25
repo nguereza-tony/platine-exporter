@@ -84,6 +84,7 @@ The exporter is configured using CLI flags:
 | `-state`   | `/tmp/state.json`  | State file (offset persistence) |
 | `-prefix`  | `platine_`         | Metrics prefix                  |
 | `-workers` | `4`                | Number of workers               |
+| `-slow-duration` | `500`                | Response slow duration in millisecond workers               |
 
 Example:
 
