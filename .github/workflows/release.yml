@@ -6,6 +6,8 @@ on:
       - master
     tags:
       - "v*"
+permissions:
+  contents: write
 jobs:
   build-and-release:
     if: github.ref_type == 'tag'

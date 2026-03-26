@@ -4,7 +4,7 @@ WINDOWS=$(EXECUTABLE)_windows_amd64.exe
 LINUX=$(EXECUTABLE)_linux_amd64
 LINUX_ARM=$(EXECUTABLE)_linux_arm64
 DARWIN=$(EXECUTABLE)_darwin_amd64
-VERSION=$(shell git describe --tags --always --long --dirty)
+VERSION=$(shell git describe --tags --always)
 CMD_PATH=./cmd/main.go
 BUILD_DIR=bin
 GO=go
@@ -28,16 +28,16 @@ linux-arm: $(LINUX) ## Build for Linux (ARM)
 darwin: $(DARWIN) ## Build for Darwin (macOS)
 
 $(WINDOWS):
-	env GOOS=windows GOARCH=amd64 $(GO) build -v -o $(BUILD_DIR)/$(WINDOWS) -ldflags="-s -w -X main.version=$(VERSION)" $(CMD_PATH)
+	env GOOS=windows GOARCH=amd64 $(GO) build -o $(BUILD_DIR)/$(WINDOWS) -ldflags="-s -w -X main.version=$(VERSION)" $(CMD_PATH)
 
 $(LINUX):
-	env GOOS=linux GOARCH=amd64 $(GO) build -v -o $(BUILD_DIR)/$(LINUX) -ldflags="-s -w -X main.version=$(VERSION)" $(CMD_PATH)
+	env GOOS=linux GOARCH=amd64 $(GO) build -o $(BUILD_DIR)/$(LINUX) -ldflags="-s -w -X main.version=$(VERSION)" $(CMD_PATH)
 
 $(LINUX_ARM):
-	env GOOS=linux GOARCH=arm64 $(GO) build -v -o $(BUILD_DIR)/$(LINUX_ARM) -ldflags="-s -w -X main.version=$(VERSION)" $(CMD_PATH)
+	env GOOS=linux GOARCH=arm64 $(GO) build -o $(BUILD_DIR)/$(LINUX_ARM) -ldflags="-s -w -X main.version=$(VERSION)" $(CMD_PATH)
 
 $(DARWIN):
-	env GOOS=darwin GOARCH=amd64 $(GO) build -v -o $(BUILD_DIR)/$(DARWIN) -ldflags="-s -w -X main.version=$(VERSION)" $(CMD_PATH)
+	env GOOS=darwin GOARCH=amd64 $(GO) build -o $(BUILD_DIR)/$(DARWIN) -ldflags="-s -w -X main.version=$(VERSION)" $(CMD_PATH)
 
 clean: ## Remove previous build
 	rm -f $(BUILD_DIR)/$(WINDOWS) $(BUILD_DIR)/$(LINUX) $(BUILD_DIR)/$(LINUX_ARM) $(BUILD_DIR)/$(DARWIN)
