@@ -46,6 +46,9 @@ go run ./cmd
 
 ```bash
 go build -o platine-exporter ./cmd
+
+# Build all
+make build
 ```
 
 Run binary:
@@ -70,7 +73,7 @@ The exporter is configured using CLI flags:
 | `-addr`    | `:9100`            | HTTP listen address                   |
 | `-metrics` | `/metrics`         | Metrics endpoint                      |
 | `-state`   | `/tmp/state.json`  | State file (offset persistence)       |
-| `-prefix`  | `platine_`         | Metrics prefix                        |
+| `-prefix`  | `platine_api_`     | Metrics prefix                        |
 | `-workers` | `1`                | Number of workers                     |
 | `-slow-duration` | `500`        | Response slow duration in millisecond |
 
@@ -82,35 +85,30 @@ Example:
 
 ## 📊 Metrics
 
-The exporter provides the following Prometheus metrics:
+The exporter provides the following Prometheus metrics (Note suppose prefix is `platine_api_`):
 
 ### Request Counters
 
-* `platine_total_request{path,method}`
-* `platine_total_request_2xx{path,method}`
-* `platine_total_request_4xx{path,method}`
-* `platine_total_request_5xx{path,method}`
+* `platine_api_requests_total{path,method,status}`
 
 ### Latency
 
-* `platine_request_duration_seconds`
-* `platine_request_db_duration_seconds`
+* `platine_api_request_duration{path,method,status}`
+* `platine_api_db_duration{path,method,status}`
 
 ### Performance
 
-* `platine_rps`
-* `platine_last_log_timestamp`
-* `platine_last_processing_time`
-* `platine_log_lag_seconds`
+* `platine_api_last_log_timestamp`
+* `platine_api_last_processing_time`
 
 ### Alerts
 
-* `platine_api_slow_requests_total`
+* `platine_api_slow_requests_total{path,method,status}`
 
 ## 🔍 Example Log Format
 
 ```
-ts=2026-03-24 17:33:11.821791	req=8afc6afb	ip=197.242.182.34	method=GET	path=/v1/document/documents/5	status=200	user=1	time=116ms	db_time=6.59ms
+ts=2026-03-24 17:33:11.821791	req=8afc6afb	ip=127.0.0.1	method=GET	path=/v1/documents/5	status=200	user=1	time=116ms	db_time=6.59ms
 ```
 
 ## 📡 Prometheus Configuration

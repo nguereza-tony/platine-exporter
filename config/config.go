@@ -58,7 +58,7 @@ func Load() *Config {
 	flag.StringVar(
 		&cfg.Prefix,
 		"prefix",
-		"platine_",
+		"platine_api_",
 		"Prefix added to all exported Prometheus metrics. Useful to namespace metrics when running multiple exporters.",
 	)
 
