@@ -4,17 +4,6 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 )
 
-type Metricss struct {
-	TotalRequest *prometheus.CounterVec
-	Duration     *prometheus.HistogramVec
-
-	LastTs      prometheus.Gauge
-	LastProcess prometheus.Gauge
-	RPS         prometheus.Gauge
-
-	SlowRequests prometheus.Counter
-}
-
 type Metrics struct {
 	RequestTotal    *prometheus.CounterVec
 	SlowRequests    *prometheus.CounterVec
