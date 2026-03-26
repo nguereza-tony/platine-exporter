@@ -19,7 +19,6 @@ It parses API traffic logs in real time and exposes useful metrics for monitorin
 ## ⚙️ Requirements
 
 * Go 1.25+
-* Prometheus
 
 ## 📦 Installation
 
