@@ -1,6 +1,10 @@
 package config
 
-import "flag"
+import (
+	"flag"
+	"fmt"
+	"os"
+)
 
 type Config struct {
 	LogFile      string
@@ -14,6 +18,14 @@ type Config struct {
 
 func Load() *Config {
 	cfg := &Config{}
+
+	flag.Usage = func() {
+		fmt.Fprintf(os.Stdout, "Platine Prometheus exporter\n")
+		fmt.Fprintf(os.Stdout, "Exporter that parses API logs and exposes Prometheus metrics.\n\n")
+		fmt.Fprintf(os.Stdout, "Usage %s: [OPTIONS]\n\n", os.Args[0])
+		fmt.Fprintf(os.Stdout, "Options:\n")
+		flag.PrintDefaults() // Prints the default messages for all defined flags
+	}
 
 	flag.StringVar(
 		&cfg.LogFile,
@@ -53,7 +65,7 @@ func Load() *Config {
 	flag.IntVar(
 		&cfg.Workers,
 		"workers",
-		4,
+		1,
 		"Number of concurrent worker goroutines used to process log entries. Increasing this value improves throughput but may increase CPU usage.",
 	)
 

@@ -3,6 +3,7 @@ package http
 import (
 	"log"
 	"net/http"
+	"platine-exporter/metrics"
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
@@ -10,7 +11,12 @@ import (
 func Start(addr, path string) error {
 
 	mux := http.NewServeMux()
-	mux.Handle(path, promhttp.Handler())
+	handler := promhttp.HandlerFor(
+		metrics.PromRegistry,
+		promhttp.HandlerOpts{
+			EnableOpenMetrics: false,
+		})
+	mux.Handle(path, handler)
 
 	server := &http.Server{
 		Addr:    addr,

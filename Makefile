@@ -1,95 +1,40 @@
 # 🚀 Platine Exporter Makefile
-
-APP_NAME=platine-exporter
-CMD_PATH=./cmd
+EXECUTABLE=platine-exporter
+WINDOWS=$(EXECUTABLE)_windows_amd64.exe
+LINUX=$(EXECUTABLE)_linux_amd64
+DARWIN=$(EXECUTABLE)_darwin_amd64
+VERSION=$(shell git describe --tags --always --long --dirty)
+CMD_PATH=./cmd/main.go
 BUILD_DIR=bin
-
 GO=go
 
-# Default target
+.PHONY: all test clean
 
-.PHONY: all
-all: build
+all: test build ## Build and run tests
 
-# 🔨 Build binary
+test: ## Run unit tests
+	$(GO) test ./...
 
-.PHONY: build
-build:
-$(GO) build -o $(BUILD_DIR)/$(APP_NAME) $(CMD_PATH)
+build: windows linux darwin ## Build binaries
+	@echo version: $(VERSION)
 
-# ▶️ Run (dev)
+windows: $(WINDOWS) ## Build for Windows
 
-.PHONY: run
-run:
-$(GO) run $(CMD_PATH)
+linux: $(LINUX) ## Build for Linux
 
-# 🧪 Run with custom flags
+darwin: $(DARWIN) ## Build for Darwin (macOS)
 
-.PHONY: run-dev
-run-dev:
-$(GO) run $(CMD_PATH) -log=app.log -addr=:8080 -workers=4
+$(WINDOWS):
+	env GOOS=windows GOARCH=amd64 $(GO) build -v -o $(BUILD_DIR)/$(WINDOWS) -ldflags="-s -w -X main.version=$(VERSION)" $(CMD_PATH)
 
-# 🧹 Clean build artifacts
+$(LINUX):
+	env GOOS=linux GOARCH=amd64 $(GO) build -v -o $(BUILD_DIR)/$(LINUX) -ldflags="-s -w -X main.version=$(VERSION)" $(CMD_PATH)
 
-.PHONY: clean
-clean:
-rm -rf $(BUILD_DIR)
+$(DARWIN):
+	env GOOS=darwin GOARCH=amd64 $(GO) build -v -o $(BUILD_DIR)/$(DARWIN) -ldflags="-s -w -X main.version=$(VERSION)" $(CMD_PATH)
 
-# 📦 Install binary globally
+clean: ## Remove previous build
+	rm -f $(BUILD_DIR)/$(WINDOWS) $(BUILD_DIR)/$(LINUX) $(BUILD_DIR)/$(DARWIN)
 
-.PHONY: install
-install:
-$(GO) install $(CMD_PATH)
-
-# 🔍 Format code
-
-.PHONY: fmt
-fmt:
-$(GO) fmt ./...
-
-# 🔎 Lint (basic)
-
-.PHONY: lint
-lint:
-$(GO) vet ./...
-
-# 🧪 Test
-
-.PHONY: test
-test:
-$(GO) test ./...
-
-# 📊 Coverage
-
-.PHONY: coverage
-coverage:
-$(GO) test -cover ./...
-
-# 📈 Benchmark
-
-.PHONY: bench
-bench:
-$(GO) test -bench=. ./...
-
-# 📦 Tidy dependencies
-
-.PHONY: tidy
-tidy:
-$(GO) mod tidy
-
-# 🔄 Download dependencies
-
-.PHONY: deps
-deps:
-$(GO) mod download
-
-# 🐳 Docker build (optional)
-
-.PHONY: docker-build
-docker-build:
-docker build -t $(APP_NAME) .
-
-# 🚀 Full pipeline
-
-.PHONY: all-in-one
-all-in-one: tidy fmt lint test build
+help: ## Display available commands
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'

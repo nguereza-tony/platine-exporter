@@ -48,7 +48,6 @@ func Tail(path string, jobs chan<- []byte, offset *int64) {
 }
 
 func readFile(path string, jobs chan<- []byte, offset *int64) {
-	log.Printf("Reading file: %s from offset %d", path, *offset)
 	file, err := os.Open(path)
 	if err != nil {
 		log.Printf("Error reading file %s: %v", path, err)

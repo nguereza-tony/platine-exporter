@@ -26,6 +26,8 @@ type Metrics struct {
 	RPS         prometheus.Gauge
 }
 
+var PromRegistry = prometheus.NewRegistry()
+
 func New(prefix string) *Metrics {
 
 	m := &Metrics{}
@@ -76,39 +78,7 @@ func New(prefix string) *Metrics {
 		Name: prefix + "last_processing_time",
 	})
 
-	/*
-		m.TotalRequest = prometheus.NewCounterVec(
-			prometheus.CounterOpts{
-				Name: prefix + "total_request",
-			},
-			[]string{"path", "method"},
-		)
-
-		m.Duration = prometheus.NewHistogramVec(
-			prometheus.HistogramOpts{
-				Name: prefix + "request_duration",
-			},
-			[]string{"path", "method"},
-		)
-
-		m.LastTs = prometheus.NewGauge(prometheus.GaugeOpts{
-			Name: prefix + "last_log_timestamp",
-		})
-
-		m.LastProcess = prometheus.NewGauge(prometheus.GaugeOpts{
-			Name: prefix + "last_processing_time",
-		})
-
-		m.RPS = prometheus.NewGauge(prometheus.GaugeOpts{
-			Name: prefix + "rps",
-		})
-
-		m.SlowRequests = prometheus.NewCounter(prometheus.CounterOpts{
-			Name: prefix + "api_slow_requests_total",
-		})
-	*/
-
-	prometheus.MustRegister(
+	PromRegistry.MustRegister(
 		m.RequestTotal,
 		m.RequestDuration,
 		m.DBDuration,
