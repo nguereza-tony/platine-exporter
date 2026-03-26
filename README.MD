@@ -68,13 +68,13 @@ The exporter is configured using CLI flags:
 
 | Flag       | Default            | Description                           |
 | ---------- | ------------------ | --------------------------------------|
-| `-log`     | `/var/log/api.log` | Log file path                         |
+| `-log`     | `/var/log/api.log` | API Log file path                     |
 | `-addr`    | `:9100`            | HTTP listen address                   |
 | `-metrics` | `/metrics`         | Metrics endpoint                      |
 | `-state`   | `/tmp/state.json`  | State file (offset persistence)       |
 | `-prefix`  | `platine_api_`     | Metrics prefix                        |
 | `-workers` | `1`                | Number of workers                     |
-| `-slow-duration` | `500`        | Response slow duration in millisecond |
+| `-slow-duration` | `500`        | API Response slow time in millisecond |
 
 Example:
 
