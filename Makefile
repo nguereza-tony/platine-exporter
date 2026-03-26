@@ -23,7 +23,7 @@ windows: $(WINDOWS) ## Build for Windows
 
 linux: $(LINUX) ## Build for Linux
 
-linux-arm: $(LINUX) ## Build for Linux (ARM)
+linux-arm: $(LINUX_ARM) ## Build for Linux (ARM)
 
 darwin: $(DARWIN) ## Build for Darwin (macOS)
 
